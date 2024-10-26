@@ -1,19 +1,24 @@
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });
+</script>
+
 ## Introduction
 
-![Man holding leaning tower](https://www.frommers.com/system/media_items/attachments/000/857/224/s980/PisaAndyHayFlickr2007.webp?1474515236)
+![](image-7.png)
 
 ## 2. Epipolar Geometry
 Epipolar geometry is the geometry of stereo vision. When two cameras view a 3D scene from two distinct positions, there are a number of geometric relations between the 3D points and their projections onto the 2D images that lead to constraints between the image points. These relations are derived based on the assumption that the cameras can be approximated by the pinhole camera model.
 
-![Epipolar Geometry](https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Aufnahme_mit_zwei_Kameras.svg/1920px-Aufnahme_mit_zwei_Kameras.svg.png)
+![](image-8.png)
 
 ### 2.1. Definition
 The figure below depicts two pinhole cameras looking at point X. In real cameras, the image plane is actually behind the focal center. 
 However, we simplified the problem by placing a *virtual* image plane in front of the camera, since real plane is symmetric about the focal center of the lens.
 
-Each camera captures a 2D image of the 3D world. This conversion from 3D to 2D is referred to as a perspective projection and is described by the pinhole camera model
+Each camera captures a 2D image of the 3D world. This conversion from 3D to 2D is referred to as a perspective projection and is described by the pinhole camera model.
 
-![Epipolar Geometry](https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Epipolar_geometry.svg/1280px-Epipolar_geometry.svg.png)
+![](image-11.png)
 
 
 ### 2.2. Epipole or epipolar point
@@ -28,13 +33,14 @@ Epipolar point is the intersection of line connecting two camera's center $O_L$ 
 Line $O_L-X$ projected on right camera creating a line $e_R-X_R$ called the epipolar line.
 Symmetrically, the line $O_R-X$ is seen by the right camera as a point and is seen as epipolar line $e_L-x_L$ by the left camera.
 
-![alt text](image.png)
+![](image.png)
+
 The red lines are epipolar lines
 
 When two image planes are parallel then the epipoles $e$ and $e'$ are located at infinity. 
-Then the epipolar lines are parallel to $x$ axis of image
+Then the epipolar lines are parallel to $x$ axis of image.
 
-![alt text](image-2.png)
+![](image-2.png)
 
 ### 2.4. Epipolar plane
 $X, O_L, O_R$ form a plane, called epipolar plane. The epipolar plane and all epipolar lines intersect the epipoles regardless of where $X$ is located.
@@ -45,9 +51,33 @@ If the relative position of the two cameras is known, this leads to two importan
 
 Assume the projection point $x_L$, the epipolar line $e_R-x_R$ and the point $X$ projects into the right image is known. A point $x_R$ which must lie on this particular epipolar line.
 
-This provides an epipolar constraint: the projection of $X$ on the right camera plane xR must be contained in the $e_R-x_R$ epipolar line. All points $X $ e.g. $X_1, X_2, X_3$ on the $O_L–X_L$ line will verify that constraint. 
+This provides an epipolar constraint: the projection of $X$ on the right camera plane xR must be contained in the $e_R-x_R$ epipolar line. All points $X$ e.g. $X_1, X_2, X_3$ on the $O_L–X_L$ line will verify that constraint. 
 
 Epipolar constraints can also be described by the essential matrix or the fundamental matrix between the two cameras.
+
+### 2.6. Disparity and Depth map
+
+![](image-10.png)
+
+The above diagram contains equivalent triangles. Writing their equivalent equations will yield us following result:
+
+$$
+\text{disparity}=x-x'=\frac{Bf}{Z}
+$$
+So the depth $Z$ would be:
+$$
+\text{depth}=\frac{x-x'}{Bf}
+$$
+
+Where:
+
+- $x$ and $x'$ are the distance between image points and their corresponding camera center.
+
+- $B$ is the baseline, distance between two camera center.
+
+- $f$ is the focal of both camera (they should have the same).
+
+So in short, the above equation says that the depth of a point in a scene is inversely proportional to the difference in distance of corresponding image points and their camera centers.
 
 ## 3. Essential matrix
 
@@ -56,12 +86,11 @@ This derivation follows the paper by Longuet-Higgins.
 
 For simplicity, we assume all the cameras are **normalized** and project the 3D world onto their respective image planes. i.e $K = K' = I$.
 
-Let the 3D coordinates of a point **P** be $(x_1,x_2,x_3) $ and $(x'_{1},x'_{2},x'_{3})$ relative to each cmera's coordinate system. 
+Let the 3D coordinates of a point **P** be $(x_1,x_2,x_3)$ and $(x'_{1},x'_{2},x'_{3})$ relative to each cmera's coordinate system. 
 
 The mapping from the coordinates of a 3D point P to the 2D image coordinates of the point's projection onto the image plane, according to the pinhole camera model, is given by:
 
 $$
-
 \left(\begin{array}{cc} 
 y_1\\
 y_2\\
@@ -69,15 +98,12 @@ y_2\\
 \end{array}\right)
 =
 \frac{1}{x_3}
-
 \left(\begin{array}{cc} 
 x_1\\ 
 x_2\\
 x_3
 \end{array}\right)
-
-and
-
+\quad \text{and} \quad
 \left(\begin{array}{cc} 
 y'_1\\
 y'_2\\
@@ -85,7 +111,6 @@ y'_2\\
 \end{array}\right)
 =
 \frac{1}{x_3}
-
 \left(\begin{array}{cc} 
 x'_1\\ 
 x'_2\\
@@ -97,15 +122,15 @@ More compactly as:
 
 $$
 \begin{align}
-y = \frac{1}{x_3} {x} && and && y' = \frac{1}{x_3}{x} 
+y = \frac{1}{x_3} {x} \quad \text{and} \quad y' = \frac{1}{x_3}{x} 
 \end{align}
 $$
  
-Where $y$ are the image 2D coordinate, $x$ are real life 3D cooordinates
+Where $y$ are the image 2D coordinate, $x$ are real life 3D cooordinates.
 
 ### 3.2. Set up camera framework
 
-![alt text](image-3.png)
+![](image-3.png)
 
 Let further assume world reference coordinate is associated with the first camera with the second camera offset by a $3\times3$ rotaion matrix $R$  and 3 dimensional translation matrix $t$. This implies:
 
@@ -119,7 +144,7 @@ So the camera matrix will be:
 
 $$
 \begin{align}
-M = P[I && 0] && and && M' = P'[R^T && R^T-t]' 
+M = P[I & 0] \quad \text{and} \quad M' = P'[R^T & R^T-t]' 
 \end{align}
 $$
 
@@ -127,7 +152,7 @@ Or (because of cameras are normalized):
 
 $$
 \begin{align}
-M = [I && 0] && and && M' = [R^T && R^T-t]' 
+M = [I & 0] \quad \text{and} \quad M' = [R^T & R^T-t]' 
 \end{align}
 $$
 
@@ -149,19 +174,16 @@ $$
 \begin {align}
 a \times b =
 \left(\begin{array}{cc} 
-0 && -a_z && a_y\\ 
-a_z && 0 && -a_x \\
--a_y && a_x && 0
+0 & -a_z & a_y\\ 
+a_z & 0 & -a_x \\
+-a_y & a_x & 0
 \end{array}\right)
-
 \left(\begin{array}{cc} 
 b_x\\ 
 b_y\\
 b_z
 \end{array}\right) =
-
 [a_\times]b
-
 \end {align}
 $$
 
@@ -190,33 +212,28 @@ The Essential matrix is a 3 × 3 matrix that contains 5 degrees of freedom. It h
 
 ### 3.4. Essential matrix mapping
 
-Different to a homography which maps a **point** to a **point**, essential matrix maps a **point** to a **line**
-
-Furthermore, let's consider a epipolar line $l$.
-and has the form of $ax+by+c=0$, or in vector form:
+Different to a homography which maps a point to a point, an essential matrix maps a **point** to a **line**.
+Furthermore, let's consider an epipolar line $l$, with the form of $ax+by+c=0$, or in vector form:
 
 $$
-\begin {aligned}
+\begin{aligned}
 l=
-\left(\begin{array}{cc} 
+\left(\begin{array}{c} 
 a\\
 b\\
 c
-\end{array}\right) &&
-
-and &&
-
-x^T l=0
-\end {aligned}
+\end{array}\right) \quad \text{and} \quad x^T l=0
+\end{aligned}
 $$
 
 Then it is easy to see that, from Equation 8:
 
 $$
-\begin {align}
-l=Ex' && and && l'=E^Tx
-\end {align}
+\begin{align}
+l=Ex' \quad \text{and} \quad l'=E^Tx
+\end{align}
 $$
+
 
 ### 3.5. Essential matrix kernel
 Since every lines on image plane pass epipolar. So $e^Tl=0$, combine with Equation 9, we have $e^Tl=0=e^TEx'$. Furthermore, $e^TE=(E^Te)^T=l'^T$ thus is normal with $x'$. 
@@ -224,7 +241,7 @@ Since every lines on image plane pass epipolar. So $e^Tl=0$, combine with Equati
 In short, essential kernel defines the epipole:
 $$
 \begin {align}
-e^TE=0 && and && Ee'=0
+e^TE=0 & and & Ee'=0
 \end {align}
 $$
 (points in normalized camera coordinates)
@@ -234,7 +251,7 @@ $$
 How do you generalize to uncalibrated cameras? Recall the Equation 3:
 $$
 \begin{align}
-M = K[I && 0] && and && M' = K'[R^T && R^T-t]' 
+M = K[I & 0] & and & M' = K'[R^T & R^T-t]' 
 \end{align}
 $$
 First, we must definde $X_W$ is a point from 3d world. We get two projected point on cameras:
@@ -246,7 +263,8 @@ X_0'=P'X_W
 \end {aligned}
 $$
 
-Say we have canonical cameras transform space by a general homography matrix $H = I$, then we have projections of $X_W$ to the corresponding camera images
+Say we have canonical cameras transform space by a general homography matrix $H = I$, 
+then we have projections of $X_W$ to the corresponding camera images.
 
 $$
 \begin {aligned}
@@ -270,7 +288,7 @@ x^T K^{-T}  [t_\times] R K'^{-1} x' =0
 \end {align}
 $$
 
-Let the matrix $F = K^{-T}  [t_\times] R K'^{-1} $ as the **Fundamental Matrix** which acts the same to the Essential matrix from previous but also encondes information about the camera matrices $K$ and $K'$ and the relative translation T and rotation R between the cameras.
+Let the matrix $F = K^{-T}  [t_\times] R K'^{-1}$ as the **Fundamental Matrix** which acts the same to the Essential matrix from previous but also encondes information about the camera matrices $K$ and $K'$ and the relative translation T and rotation R between the cameras.
 
 Therefore, it is also useful in computing the epipolar lines associated with p and p′, even when the camera matrices K, K′ and the transformation R, T are unknown.
 
@@ -296,25 +314,19 @@ x_1\\
 x_2\\
 1
 \end{array}\right)
-
-&& and &&
-
+\quad \text{and} \quad
 x'=
 \left(\begin{array}{cc} 
 x'_1\\ 
 x'_2\\
 1
 \end{array}\right)
-
-&& and &&
-
 F = 
 \left(\begin{array}{cc} 
-f_{11} && f_{12} && f_{13}\\
-f_{21} && f_{22} && f_{23}\\
-f_{31} && f_{32} && f_{33}
+f_{11} & f_{12} & f_{13}\\
+f_{21} & f_{22} & f_{23}\\
+f_{31} & f_{32} & f_{33}
 \end{array}\right)
-
 \end{aligned}
 $$
 
@@ -322,7 +334,6 @@ $$
 The constraint can be rewritten as:
 
 $$
-
 \left(\begin{array}{cc} 
 x'_1x_1 & x'_1x_2 & x'_1 &
 x'_2x_1 & x'_2x_2 & x'_2 &
@@ -334,14 +345,12 @@ f_{11} \\ f_{12} \\ f_{13}\\
 f_{21} \\ f_{22} \\ f_{23}\\
 f_{31} \\ f_{32} \\ f_{33}
 \end{array}\right)
-
-
 =0
 \end {aligned}
 $$
 
 That is $f$ represents the flatten **Fundamental matrix** vector and 
-this vector must be othorgonal to vector $\mathbf{\bar{x}} = x'x^T$ 
+this vector must be othorgonal to vector $\mathbf{\bar{x}} = x'x^T$.
 
 Each pair of corresponding image points produces a vector $\mathbf{\bar{x}}$. 
 Given a set of 3D points $\mathbf{X_W}$ corresponding to a set of vector $\mathbf{\bar{x}}$ 
@@ -357,7 +366,7 @@ $$
 Xf=0
 $$
 
-Where $\mathbf{X}$ is a $N \times 9 $ matrix with $N \ge 8$.
+Where $\mathbf{X}$ is a $N \times 9$ matrix with $N \ge 8$.
 
 ### 5.2. Solving the equation
 In pracitce, there are noise so solution vector f is defined only up to an unknown scale.
@@ -373,15 +382,14 @@ $$
 \end{align} 
 $$
 
-The subject is to avoid the trivial solution f
+The subject is to avoid the trivial solution f.
 
 The solution to this optimize problem can be found by Singular Value Decomposition (SVD).
 $f$ is the right singular vector corresponding to the smallest singular value of $X$. A reshape
 of this $f$ into $3 \times 3$ matrix give result called as $\mathbf{F_{est}}$.
 
 ### 5.3. Enforcing the internal constraint
-An important property of the fundamental matrix is that it is singular,
-in fact of rank 2. 
+An important property of the fundamental matrix is that it is singular, in fact of rank 2. 
 Furthermore, the left and right null spaces ($e$ and $e'$) of $F$ are generated by the vectors representing the two epipoles in the images i.e $dim Null(F) = 1$. 
 However, often, dealing with noisy image gives the result $\mathbf{F_{est}}$ from Equation 14 usually does not have rank 2.
 
@@ -394,7 +402,7 @@ $$
     \end {split}
 \end{align} 
 $$
-The constrain is to make $F$ is singular
+The constrain is to make $F$ is singular.
 
 This problem is solved again by SVD, where $F = U\Sigma V^T $ then the best rank-2 approximation is found by:
 
@@ -421,11 +429,13 @@ Furthermore, if the image points used to construct $X$ lie in a relatively small
 
 #### 5.4.2. Solution
 To solve this, map each coordinate system of two images independently into a new system satisfying two conditions:
+
 - The origin of the new system should be at the centroid (center of gravity) of the image points. This is accomplished by translating original origin to new one.
 
 - After the translation, the coordinates have to be uniformed so that the mean of distance from each points to the origin equals $\sqrt 2$. This can e done by the scaling factor for each respective image
+
 $$
-\sqrt \frac{2N}{\displaystyle \sum_{i=1}^N ||x_i-\mu||^2} 
+\displaystyle \sqrt \frac{2N}{\displaystyle \sum_{i=1}^N ||x_i-\mu||^2} 
 $$
 
 Afterwards, a distinct coordinate transformation for each of the two images. We obtain a new homogeneous image:
@@ -433,7 +443,7 @@ $$
 \begin {align*}
 \bar x = Tx \\
 \bar x'= T'x'
-\end {align*}
+\end{align*}
 $$
 
 This normalization is only dependent on the image points which are used in a single image and is, in general, distinct from normalized image coordinates produced by a normalized camera.
@@ -464,14 +474,14 @@ We can assume that the two cameras has the same intrinsic $K$ and there is no ro
 Furthermore, we assume there is only a translation along the $x$ axis $T=(T_x,0,0)$.
 Then the essential matrix would be:
 $$
-\begin {align}
+\begin{align}
 E_{rect}=[T_\times] R =
 T_\times
 \left(
 \begin{array}{cc}
-0 && 0 && 0 \\
-0 && 0 && -1 \\
-0 && 1 && 0 \\
+0 & 0 & 0 \\
+0 & 0 & -1 \\
+0 & 1 & 0 \\
 \end{array}\right)
 \end {align}
 $$
@@ -480,30 +490,27 @@ $$
 \begin {align*}
 l = Ex'=
 \left(\begin{array}{cc}
-0 && 0 && 0 \\
-0 && 0 && -T_\times \\
-0 && T_\times && 0 \\
+0 & 0 & 0 \\
+0 & 0 & -T_\times \\
+0 & T_\times & 0 \\
 \end{array}\right)
-
 \left(\begin{array}{cc}
 x'_1 \\
 x'_2 \\
 1
 \end{array}\right)
-
 =
 \left(\begin{array}{cc}
 0 \\
 -T_\times\\
 T_\times x'_2
 \end{array}\right)
-
 \end {align*}
 $$
 We can see that epipolar line $l$ horizontal, parallel to the $x$ axis. 
 As is the direction of $l$, which is computed in the same manner.
 
-![alt text](image-5.png)
+![](image-5.png)
 
 Furthermore, if we use the epipolar constraint $x^TEx'=0$, 
 then we arrive the fact that $x_2=x'_2$, which is very handy in indentifying correspondences.
@@ -522,7 +529,7 @@ Eight Point algorithm. Upon getting the Fundamental matrix, we can compute the e
 
 From the set of epipolar lines, we can then estimate the epipoles $e$ and $e'$ of each image. This is because epipole lies in the intersection of all the epipolar lines. 
 In pratice, due to noises, all the epipolar lines will not intersect in a single point. Therefore, epipole esstimated by minimizing the least squared error of fitting a point to all the epipolar lines.
-Recall that a line is defined by $\set{x|l^tx=0}$:
+Recall that a line is defined by $\{ x \mid l^T x = 0 \}$:
 
 $$
 \left(\begin{array}{cc}
@@ -538,7 +545,7 @@ We can use SVD to find $e$. $e$ is the smallest eigenvector of $L$.
 Generally, the solution epipoles $e$ and $e'$ are not at infinity along the horizontal $x$ axis. If they were, by definition, the images have already been parallel.
 Thus we gain some insight to make the images parallel: find a homography to map epipole $e$ to infinity along the $x$ axis. 
 
-![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Lecture_1027_stereo_01.jpg/1920px-Lecture_1027_stereo_01.jpg)
+![](image-12.png)
 
 Specifically, this means that we want to find a pair of homographies H1, H2 that we can apply to the images to map the epipoles to infinity. We map the second epipole $e'$ to a point at infinity on the horizontal axis. One condition that leads to good results in practice is to insist that the homography acts like a transformation that applies a 
 translation and rotation on points near the center of the image.
@@ -561,9 +568,9 @@ then the rotation applied is:
 
 $$
 R = \left(\begin{array}{cc}
-\alpha\frac{e'_1}{\sqrt{e_1'^2 + e_2'^2}} && \alpha\frac{e'_2}{\sqrt{e_1'^2 + e_2'^2}} && 0 \\
--\alpha\frac{e'_2}{\sqrt{e_1'^2 + e_2'^2}} && \alpha\frac{e'_1}{\sqrt{e_1'^2 + e_2'^2}} && 0 \\
-0 && 0 && 1
+\alpha\frac{e'_1}{\sqrt{e_1'^2 + e_2'^2}} & \alpha\frac{e'_2}{\sqrt{e_1'^2 + e_2'^2}} & 0 \\
+-\alpha\frac{e'_2}{\sqrt{e_1'^2 + e_2'^2}} & \alpha\frac{e'_1}{\sqrt{e_1'^2 + e_2'^2}} & 0 \\
+0 & 0 & 1
 \end{array}\right) 
 $$
 
@@ -573,9 +580,9 @@ After applying this rotation, bringing any point at $(f, 0, 1)$ to a point at in
 
 $$
 G = \left(\begin{array}{cc}
-1& & 0 && 0 \\
-0 && 1& & 0 \\
-\frac{1}{f} && 0 && 1 
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+\frac{1}{f} & 0 & 1 
 \end{array}\right) 
 $$
 
@@ -587,9 +594,10 @@ $$
 
 Now that a valid $ H_2 $ is found, we need to find a matching homography $ H_1$ for the first image. We do so by finding a transformation $H_1$ that minimizes the sum of square distances between the corresponding points of the images:
 
-$$
-\displaystyle \argmin_{H_1} {\sum_i || H_1 x_i - H'_i x_i'||^2 }
-$$
+$$\underset{H_i}{\text{argmax}}{\sum_i \| H_i x_i - H'_i x'_i \|^2}$$
+
+
+
 
 
 # References

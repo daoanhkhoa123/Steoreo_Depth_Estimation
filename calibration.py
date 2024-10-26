@@ -1,8 +1,9 @@
 from cv2.typing import MatLike
 from numpy.typing import NDArray
 
-import numpy as np
 import cv2
+import random as rd
+import numpy as np
 
 
 def draw_keypoints_and_match(img1: MatLike, img2: MatLike, nfeatures=500) -> tuple[NDArray, NDArray, MatLike]:
@@ -53,6 +54,32 @@ def compute_Fundamental_matrix(kp1_list: NDArray, kp2_list: NDArray) -> NDArray:
 
     # return F mat
     return Uf.dot(np.dot(np.diag(Df[i]), Vft))
+
+
+def calculate_F_matrix(list_kp1, list_kp2):
+    """This function is used to calculate the F matrix from a set of 8 points using SVD.
+        Furthermore, the rank of F matrix is reduced from 3 to 2 to make the epilines converge."""
+
+    A = np.zeros(shape=(len(list_kp1), 9))
+
+    for i in range(len(list_kp1)):
+        x1, y1 = list_kp1[i][0], list_kp1[i][1]
+        x2, y2 = list_kp2[i][0], list_kp2[i][1]
+        A[i] = np.array([x1*x2, x1*y2, x1, y1*x2, y1*y2, y1, x2, y2, 1])
+
+    U, s, Vt = np.linalg.svd(A)
+    F = Vt[-1, :]
+    F = F.reshape(3, 3)
+
+    # Downgrading the rank of F matrix from 3 to 2
+    Uf, Df, Vft = np.linalg.svd(F)
+    Df[2] = 0
+    s = np.zeros((3, 3))
+    for i in range(3):
+        s[i][i] = Df[i]
+
+    F = np.dot(Uf, np.dot(s, Vft))
+    return F
 
 
 def RANSAC_F_mat(kp1_list: NDArray, kp2_list: NDArray, max_inliers=20, threshold=0.05, max_iter=1000) -> NDArray:
@@ -122,6 +149,73 @@ def get_camerapose(E_mat: NDArray) -> list[list[NDArray]]:
 
     # return camera_poses
     return [[R1_mat, C1_mat], [R1_mat, C2_mat], [R2_mat, C1_mat], [R2_mat, C2_mat]]
+
+
+def RANSAC_F_matrix(list_of_cood_list):
+    """This method is used to shortlist the best F matrix using RANSAC based on the number of inliers."""
+
+    list_kp1 = list_of_cood_list[0]
+    list_kp2 = list_of_cood_list[1]
+    pairs = list(zip(list_kp1, list_kp2))
+    max_inliers = 20
+    threshold = 0.05  # Tune this value
+
+    for i in range(1000):
+        pairs = np.random.sample(pairs, 8)
+        rd_list_kp1, rd_list_kp2 = zip(*pairs)
+        F = calculate_F_matrix(rd_list_kp1, rd_list_kp2)
+
+        tmp_inliers_img1 = []
+        tmp_inliers_img2 = []
+
+        for i in range(len(list_kp1)):
+            img1_x = np.array([list_kp1[i][0], list_kp1[i][1], 1])
+            img2_x = np.array([list_kp2[i][0], list_kp2[i][1], 1])
+            distance = abs(np.dot(img2_x.T, np.dot(F, img1_x)))
+            # print(distance)
+
+            if distance < threshold:
+                tmp_inliers_img1.append(list_kp1[i])
+                tmp_inliers_img2.append(list_kp2[i])
+
+        num_of_inliers = len(tmp_inliers_img1)
+
+        # if num_of_inliers > inlier_count:
+        #     inlier_count = num_of_inliers
+        #     Best_F = F
+
+        if num_of_inliers > max_inliers:
+            print("Number of inliers", num_of_inliers)
+            max_inliers = num_of_inliers
+            Best_F = F
+            inliers_img1 = tmp_inliers_img1
+            inliers_img2 = tmp_inliers_img2
+            # print("Best F matrix", Best_F)
+
+    return Best_F
+
+
+def calculate_E_matrix(F, K1, K2):
+    """Calculation of Essential matrix"""
+
+    E = np.dot(K2.T, np.dot(F, K1))
+    return E
+
+
+def extract_camerapose(E):
+    """This function extracts all the camera pose solutions from the E matrix"""
+
+    U, s, Vt = np.linalg.svd(E)
+    W = np.array([[0, -1, 0],
+                  [1, 0, 0],
+                  [0, 0, 1]])
+
+    C1, C2 = U[:, 2], -U[:, 2]
+    R1, R2 = np.dot(U, np.dot(W, Vt)), np.dot(U, np.dot(W.T, Vt))
+    # print("C1", C1, "\n", "C2", C2, "\n", "R1", R1, "\n", "R2", R2, "\n")
+
+    camera_poses = [[R1, C1], [R1, C2], [R2, C1], [R2, C2]]
+    return camera_poses
 
 
 def disambiguate_camerapose(camera_pose: list[list[NDArray]], list_kp1: NDArray):
