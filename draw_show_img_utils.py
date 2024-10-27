@@ -1,94 +1,50 @@
 from typing import Sequence
-from cv2.typing import MatLike
-import os
-
+from pathlib import Path
 import cv2
 from matplotlib import pyplot as plt
 import numpy as np
 
-""" FROM CPV LAB 1"""
-
-
-def draw_quadrange(x, y, color=None, limX=None, limY=None) -> None:
-    """draw a regtangle of points
-    Bundle a scatter, color, xlim, ylim in one function
-
-    Args:
-        x, y (np array shape): data positoin
-        color (str, optional): color of points.
-        limX , limy (Iterable[int]): matplotlib Xlim Ylim
-    """
-
+def draw_quadrange(x, y, color=None, limX=None, limY=None):
+    """Vẽ một hình chữ nhật của các điểm trên đồ thị."""
     plt.scatter(x, y, color=color)
-
-    if limX is not None and limY is not None:
+    if limX and limY:
         plt.xlim(limX)
         plt.ylim(limY)
 
-
-""" FROM CPV LAB 2 """
-
-
-def draw_2_img(im1: MatLike, im2: MatLike, label1: str = None, label2: str = None,  cmap="grey", figsize: tuple[int, int] = None, sharexy: bool = False):
-    fig, axes = plt.subplots(1, 2, figsize=figsize,
-                             sharex=sharexy, sharey=sharexy)
-
-    # configuration
-    axes[0].set_title(label1)
-    axes[1].set_title(label2)
-
-    axes[0].imshow(im1, cmap=cmap)
-    axes[1].imshow(im2, cmap=cmap)
-
+def draw_2_img(im1, im2, label1=None, label2=None, cmap="gray", figsize=(10, 5), sharexy=False):
+    """Vẽ hai hình ảnh cạnh nhau với các tiêu đề và thang màu tuỳ chọn."""
+    fig, axes = plt.subplots(1, 2, figsize=figsize, sharex=sharexy, sharey=sharexy)
+    for ax, img, label in zip(axes, [im1, im2], [label1, label2]):
+        ax.set_title(label)
+        ax.imshow(img, cmap=cmap)
     return fig, axes
 
-
-def cv2_imshow(img, winname=str()) -> None:
+def cv2_imshow(img, winname="Image"):
+    """Hiển thị hình ảnh sử dụng OpenCV."""
     cv2.imshow(winname, img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-
 def figure_to_img(fig):
+    """Chuyển đổi matplotlib figure thành ảnh OpenCV."""
     fig.canvas.draw()
     img = np.array(fig.canvas.renderer.buffer_rgba())
     return cv2.cvtColor(img, cv2.COLOR_RGBA2BGR)
 
-
-""" FROM CPV LAB 3"""
-
-
-def draw_many_imgs(imgs: Sequence[MatLike], labels: Sequence[str], cmap="grey", figsize: tuple[int, int] = None, sharexy: bool = False):
-    """Extension to draw_2_img"""
-    assert len(imgs) == len(labels), f"Images and labels must have the same length. Got {
-        len(imgs)} != {len(labels)}"
-
-    fig, axes = plt.subplots(1, len(imgs), figsize=figsize,
-                             sharex=sharexy, sharey=sharexy)
-
-    for i in range(len(axes)):
-        axes[i].set_title(labels[i])
-        axes[i].imshow(imgs[i], cmap=cmap)
-
+def draw_many_imgs(imgs: Sequence[np.ndarray], labels: Sequence[str], cmap="gray", figsize=(15, 5), sharexy=False):
+    """Vẽ nhiều hình ảnh cạnh nhau với các tiêu đề."""
+    fig, axes = plt.subplots(1, len(imgs), figsize=figsize, sharex=sharexy, sharey=sharexy)
+    for ax, img, label in zip(axes, imgs, labels):
+        ax.set_title(label)
+        ax.imshow(img, cmap=cmap)
     return fig, axes
 
-
-""" FROM CPV LAB 4"""
-
-
 def print_debug(*args):
+    """In ra các biến để kiểm tra nhanh."""
     for i, arg in enumerate(args):
-        print("Vaiable", i)
-        print(arg)
-
-    print("_"*10)
-
-
-""" FOR THIS IPYNB """
-
+        print(f"Variable {i}:\n{arg}\n" + "_"*10)
 
 def get_img_path(name: str):
-    return os.path.join(os.path.dirname(os.getcwd()),
-                        "data_segs", f"{name}_0.png"), \
-        os.path.join(os.path.dirname(os.getcwd()),
-                     "data_segs", f"{name}_1.png")
+    """Trả về đường dẫn tới hai hình ảnh với tên đã cho."""
+    base_path = Path.cwd().parent / "data_segs"
+    return base_path / f"{name}_0.png", base_path / f"{name}_1.png"
