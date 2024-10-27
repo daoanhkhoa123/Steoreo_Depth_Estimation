@@ -6,7 +6,7 @@ import numpy as np
 import cv2
 from typing import Tuple
 
-def draw_keypoints_and_match(img1: NDArray, img2: NDArray, nfeatures: int = 500) -> Tuple[NDArray, NDArray, NDArray]:
+def draw_keypoints_and_match(img1: MatLike, img2: MatLike, nfeatures: int = 500) -> Tuple[NDArray, NDArray, MatLike]:
     """This function is used for finding keypoints and dercriptors in the image and
         find best matches using brute force/FLANN based matcher."""
     #tao ORB phat hien dac diem chung
