@@ -484,7 +484,7 @@ T_\times
 
 Once $E$ is known, we can find the directions of the epipolar line $l$ associated with point $x'$ in the second image plane:
 
-$$\begin {align*}
+$$\begin{align*}
 l = Ex'=
 \left(\begin{array}{cc}
 0 & 0 & 0 \\
