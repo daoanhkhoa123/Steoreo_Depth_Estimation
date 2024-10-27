@@ -306,8 +306,7 @@ gives us an easy constraint (the epipolar line) of the corresponding point in th
 
 With each correspondent $x$ and $x'$
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 x=
 \left(\begin{array}{cc} 
 x_1\\ 
@@ -327,14 +326,12 @@ f_{11} & f_{12} & f_{13}\\
 f_{21} & f_{22} & f_{23}\\
 f_{31} & f_{32} & f_{33}
 \end{array}\right)
-\end{aligned}
-$$
+\end{aligned}$$
 
 
 The constraint can be rewritten as:
 
-$$
-\left(\begin{array}{cc} 
+$$\left(\begin{array}{cc} 
 x'_1x_1 & x'_1x_2 & x'_1 &
 x'_2x_1 & x'_2x_2 & x'_2 &
 x_1 & x_2 & 1
@@ -346,8 +343,7 @@ f_{21} \\ f_{22} \\ f_{23}\\
 f_{31} \\ f_{32} \\ f_{33}
 \end{array}\right)
 =0
-\end {aligned}
-$$
+\end {aligned}$$
 
 That is $f$ represents the flatten **Fundamental matrix** vector and 
 this vector must be othorgonal to vector $\mathbf{\bar{x}} = x'x^T$.
@@ -469,12 +465,13 @@ $$
 
 ## 5. Image Rectification
 ### 5.1. Parallel image planes
+
 Recall that when two image planes are parallel then the epipoles $e$ and $e'$ are located at infinity and the epipolar lines are parallel to the $x$ axis of image.
 We can assume that the two cameras has the same intrinsic $K$ and there is no rotation between them $R=I$.
 Furthermore, we assume there is only a translation along the $x$ axis $T=(T_x,0,0)$.
 Then the essential matrix would be:
-$$
-\begin{align}
+
+$$\begin{align}
 E_{rect}=[T_\times] R =
 T_\times
 \left(
@@ -483,11 +480,11 @@ T_\times
 0 & 0 & -1 \\
 0 & 1 & 0
 \end{array}\right)
-\end {align}
-$$
+\end {align}$$
+
 Once $E$ is known, we can find the directions of the epipolar line $l$ associated with point $x'$ in the second image plane:
-$$
-\begin {align*}
+
+$$\begin {align*}
 l = Ex'=
 \left(\begin{array}{cc}
 0 & 0 & 0 \\
@@ -505,8 +502,8 @@ x'_2 \\
 -T_\times\\
 T_\times x'_2
 \end{array}\right)
-\end {align*}
-$$
+\end {align*}$$
+
 We can see that epipolar line $l$ horizontal, parallel to the $x$ axis. 
 As is the direction of $l$, which is computed in the same manner.
 
@@ -587,14 +584,13 @@ G = \left(\begin{array}{cc}
 $$
 
 After applying this transformation, we finally have an epipole at infinity, so we can translate back to the regular image space. Thus, the homography $H_2$ that we apply on the second image to rectify it is:
-$$
-H_2 = T^{-1}GRT
-$$
+
+$$H_2 = T^{-1}GRT$$
 
 
-Now that a valid $ H_2 $ is found, we need to find a matching homography $ H_1$ for the first image. We do so by finding a transformation $H_1$ that minimizes the sum of square distances between the corresponding points of the images:
+Now that a valid $H_2$ is found, we need to find a matching homography $H_1$ for the first image. We do so by finding a transformation $H_1$ that minimizes the sum of square distances between the corresponding points of the images:
 
-$$\underset{H_i}{\text{argmax}}{\sum_i \lVert H_i x_i - H'_i x'_i  \rVert^2}$$
+$$\underset{H_i}{\text{argmax}}{\sum_{i} \lVert H_i x_i - H'_i x'_i  \rVert^2}$$
 
 ## 6. Camera Pose
 
@@ -604,8 +600,8 @@ The camera pose consists of 6 degrees-of-freedom (DOF): Rotation (Roll, Pitch, Y
 $P = K [R | t]$
 where $K$ is the intrinsic parameter matrix.
 
-Four pose configurations can be computed from the E matrix. Let $E = UDV^T$ and $W = \left(\begin{array}{cc}
-0 & -1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1\end{array}\right)$.
+Four pose configurations can be computed from the E matrix. Let $E = UDV^T$ and 
+$W = \left(\begin{array}{cc}0 & -1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1\end{array}\right)$.
 
 The four configurations are:
 
