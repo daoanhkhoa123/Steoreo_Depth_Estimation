@@ -55,7 +55,7 @@ def print_debug(*args):
         print(f"Variable {i}:\n{arg}\n" + "_"*10)
 
 
-def get_img_path(name: str):
+def get_img_path(name: str = "img", index=0):
     """Trả về đường dẫn tới hai hình ảnh với tên đã cho."""
-    base_path = Path.cwd().parent / "data_segs"
-    return base_path / f"{name}_0.png", base_path / f"{name}_1.png"
+    base_path = Path.cwd().parent / "datasets"
+    return base_path / f"{name}{index}_0.png", base_path / f"{name}{index}_1.png"
