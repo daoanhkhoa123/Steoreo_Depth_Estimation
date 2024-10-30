@@ -1,5 +1,4 @@
 from typing import Sequence
-from pathlib import Path
 from cv2.typing import MatLike
 
 import cv2
@@ -54,8 +53,3 @@ def print_debug(*args):
     for i, arg in enumerate(args):
         print(f"Variable {i}:\n{arg}\n" + "_"*10)
 
-
-def get_img_path(name: str = "img", index=0):
-    """Trả về đường dẫn tới hai hình ảnh với tên đã cho."""
-    base_path = Path.cwd().parent / "datasets"
-    return base_path / f"{name}{index}_0.png", base_path / f"{name}{index}_1.png"

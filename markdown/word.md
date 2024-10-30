@@ -5,7 +5,7 @@
 
 ![](image-7.png)
 
-# 2. Mathematical background
+# II. Mathematical background
 
 ## 1. Epipolar Geometry
 Epipolar geometry is the geometry of stereo vision. When two cameras view a 3D scene from two distinct positions, there are a number of geometric relations between the 3D points and their projections onto the 2D images that lead to constraints between the image points. These relations are derived based on the assumption that the cameras can be approximated by the pinhole camera model.
@@ -25,7 +25,7 @@ Each camera captures a 2D image of the 3D world. This conversion from 3D to 2D i
 
 Each center projects onto a distinct point into the other camera's image plane. These two image points, denoted by $e_L$ and $e_R$, are called epipoles or epipolar points.
 
-Epipolar point is the intersection of line connecting two camera's center $O_L$ and $O_R$ with their image plane.
+Ep`ipolar point is the intersection of line connecting two camera's center $O_L$ and $O_R$ with their image plane.
 
 
 ### 1.3. Epipolar line
@@ -464,7 +464,6 @@ F = T'^T\bar FT
 $$
 
 ## 5. Image Rectification
-### 5.1. Parallel image planes
 
 Recall that when two image planes are parallel then the epipoles $e$ and $e'$ are located at infinity and the epipolar lines are parallel to the $x$ axis of image.
 We can assume that the two cameras has the same intrinsic $K$ and there is no rotation between them $R=I$.
@@ -515,117 +514,11 @@ Therefore **rectification** makes any two given images become parallel,
 becomes useful then discerning the relationship between corresponding points in images. 
 
 
-### 5.2. Rectification Setup:
-
-We compute two homographies $H_1$ and $H_2$ that apply to the image planes to make the resulting planes parallel.
-
-Rectifying a pair of images does not require knowledge of camera intrinsic
-$K$ and $K'$, or the transformation matrix $R,T$. 
-Instead, we can use the Fundamental matrix estimated by the Normalized 
-Eight Point algorithm. Upon getting the Fundamental matrix, we can compute the epipolar lines $l_i$ and $l_i'$ for each correspondence and $x_i'$ and $x_i$.
-
-From the set of epipolar lines, we can then estimate the epipoles $e$ and $e'$ of each image. This is because epipole lies in the intersection of all the epipolar lines. 
-In pratice, due to noises, all the epipolar lines will not intersect in a single point. Therefore, epipole esstimated by minimizing the least squared error of fitting a point to all the epipolar lines.
-Recall that a line is defined by $\{ x \mid l^T x = 0 \}$:
-
-$$
-\left(\begin{array}{cc}
-l^T_1 \\ 
-l^T_2 \\ 
-\vdots \\ 
-l^T_n \end{array}\right) 
-e = 0
-$$
-
-We can use SVD to find $e$. $e$ is the smallest eigenvector of $L$.
-
-Generally, the solution epipoles $e$ and $e'$ are not at infinity along the horizontal $x$ axis. If they were, by definition, the images have already been parallel.
-Thus we gain some insight to make the images parallel: find a homography to map epipole $e$ to infinity along the $x$ axis. 
-
-![](image-12.png)
-
-Specifically, this means that we want to find a pair of homographies H1, H2 that we can apply to the images to map the epipoles to infinity. We map the second epipole $e'$ to a point at infinity on the horizontal axis. One condition that leads to good results in practice is to insist that the homography acts like a transformation that applies a 
-translation and rotation on points near the center of the image.
-
-### 5.3. Sending epipoles to infinity
-
-First, we translate the second image so its center is at $(0, 0, 1)$ in homogeneous coordinates using the translation matrix $T$:
-
-$$
-T = \left(\begin{array}{cc}
-1 & 0 & -\text{width}/2 \\
-0 & 1 & -\text{height}/2 \\
-0 & 0 & 1
-\end{array}\right) 
-$$
-
-After translation, we apply a rotation to place the epipole on the the horizontal axis at some point $(f, 0, 1)$.
-If the translated epipole $Te'$ is located at homogeneous coordinates $(e_1, e_2, 1)$, 
-then the rotation applied is:
-
-$$
-R = \left(\begin{array}{cc}
-\alpha\frac{e'_1}{\sqrt{e_1'^2 + e_2'^2}} & \alpha\frac{e'_2}{\sqrt{e_1'^2 + e_2'^2}} & 0 \\
--\alpha\frac{e'_2}{\sqrt{e_1'^2 + e_2'^2}} & \alpha\frac{e'_1}{\sqrt{e_1'^2 + e_2'^2}} & 0 \\
-0 & 0 & 1
-\end{array}\right) 
-$$
-
-Where $\alpha = 1$ if $e'_1 \geq 0$ and $\alpha = -1$ otherwise. 
-
-After applying this rotation, bringing any point at $(f, 0, 1)$ to a point at infinity on the horizontal axis $(f, 0, 0)$ requires applying the transformation:
-
-$$
-G = \left(\begin{array}{cc}
-1 & 0 & 0 \\
-0 & 1 & 0 \\
-\frac{1}{f} & 0 & 1 
-\end{array}\right) 
-$$
-
-After applying this transformation, we finally have an epipole at infinity, so we can translate back to the regular image space. Thus, the homography $H_2$ that we apply on the second image to rectify it is:
-
-$$H_2 = T^{-1}GRT$$
-
-
-Now that a valid $H_2$ is found, we need to find a matching homography $H_1$ for the first image. We do so by finding a transformation $H_1$ that minimizes the sum of square distances between the corresponding points of the images:
-
-$$\underset{H_i}{\text{argmax}}{\sum_{i} \lVert H_i x_i - H'_i x'_i  \rVert^2}$$
-
-## 6. Camera Pose
-
-### 6.1. Estimate Camera Pose from Essential Matrix
-
-The camera pose consists of 6 degrees-of-freedom (DOF): Rotation (Roll, Pitch, Yaw) and Translation $(X, Y, Z)$ of the camera with respect to the world. Since the E matrix is identified, the four camera pose configurations $(C_1, R_1), (C_2, R_2), (C_3, R_3), (C_4, R_4)$ where $C \in \mathbb{R}^3$ is the camera center and $R \in SO(3)$ is the rotation matrix, can be computed. Thus, the camera pose can be written as:
-$P = K [R | t]$
-where $K$ is the intrinsic parameter matrix.
-
-Four pose configurations can be computed from the E matrix. Let $E = UDV^T$ and 
-$W = \left(\begin{array}{cc}0 & -1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1\end{array}\right)$.
-
-The four configurations are:
-
-- $C_1 = U(:, 3)$ and $R_1 = UWV^T$
-
-- $C_2 = -U(:, 3)$ and $R_2 = UWV^T$
-
-- $C_3 = U(:, 3)$ and $R_3 = UW^TV^T$
-
-- $C_4 = -U(:, 3)$ and $R_4 = UW^TV^T$
-
-### 6.2. Check for Chirality Condition using Triangulation
-
-In the previous section, we computed four different possible camera poses for a pair of images using the essential matrix. To find the correct unique camera pose, we need to remove the ambiguity. This can be accomplished by checking **the chirality condition**, i.e., **the reconstructed points must be in front of the cameras**.
-
-To check the chirality condition, triangulate the 3D points (given two camera poses) using linear least squares to check the sign of depth $Z$ in the camera coordinate system with respect to the camera center. 
-
-A 3D point $X$ is in front of a camera if it satisfies $r_3 (X - C) > 0$, where $r_3$ is the third row of the rotation matrix (z-axis of the camera). Not all triangulated points satisfy this condition due to the presence of correspondence noise. The best camera configuration $(C, R, X)$ is the one that produces the maximum number of points satisfying the chirality condition.
-
-# 3. Solution
+# IIII. Solution
 
 Most of the algorithm used in our codes are described above.
 
-![](image-17.png)
+![](flow-chart.drawio.png)
 
 ## 3.1. calibration.py
 
@@ -654,19 +547,7 @@ Calculation of the Essential matrix with $F$, $K_1$ and $K_2$ camera intrinsic.
 
 More details at section [Essential-matrix](#2-essential-matrix)
 
-### 3.1.5. def get_camerapose(E_mat: NDArray) -> list[list[NDArray]]: ...
-
-Extracts all the camera pose solutions from the E matrix.
-
-More details at section [Camera Pose](#6-camera-pose)
-
-### 3.1.6 def disambiguate_camerapose(camera_pose: list[list[NDArray]], list_kp1: NDArray): ...
-
-Find the correct camera pose based on the chirelity condition from all 4 solutions.
-
-More details at section [Camera Pose](#6-camera-pose)
-
-### 3.1.7. def drawlines(img1src: MatLike, img2src: MatLike, lines, pts1src, pts2src, random_seed=0) -> tuple[MatLike, MatLike]: ...
+### 3.1.5. def drawlines(img1src: MatLike, img2src: MatLike, lines, pts1src, pts2src, random_seed=0) -> tuple[MatLike, MatLike]: ...
 
 Visualize the epilines on both the images
 
@@ -696,14 +577,7 @@ $$\text{depth} = \frac{Bf}{x-x'}$$
 
 More details at section [Depth Map](#16-disparity-and-depth-map) 
 
-## 3.4. rectification.py
-
-### 3.4.1. def rectification(img1, img2, pts1, pts2, F):
-
-Rectify the images to make camera pose's parallel and thus make epiplines as horizontal.
-Since camera distortion parameters are not given we will use cv2.stereoRectifyUncalibrated(), instead of stereoRectify().
-
-# 4. Evaluation
+# IIII. Evaluation
 
 ## 4.1. The results achieved
 
@@ -760,8 +634,6 @@ Its module is available at *cv2.ximgproc.createDisparityWLSFilter*
 ### 4.3.3. Deep Learning Based Approach
 
 Deep learning
-
-
 
 # References
 

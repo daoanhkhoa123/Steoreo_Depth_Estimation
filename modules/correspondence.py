@@ -1,53 +1,58 @@
-import numpy as np
-import cv2
 from numba import jit
+import numpy as np
+from numpy.typing import NDArray
+
 
 @jit(nopython=True)
-def sum_of_squared_diff(pixel_vals_1, pixel_vals_2):
+def _sum_of_squared_diff(pixel_vals_1: NDArray[np.float32], pixel_vals_2: NDArray[np.float32]) -> float:
     """Sum of squared distances for Correspondence"""
-    if pixel_vals_1.shape != pixel_vals_2.shape:
-        return -1
     return np.sum((pixel_vals_1 - pixel_vals_2) ** 2)
 
+
 @jit(nopython=True)
-def block_comparison(y, x, block_left, right_array, block_size, x_search_block_size, y_search_block_size):
-    """Block comparison function to find minimum SSD match"""
+def _block_comparison(y: int, x: int, block_left: NDArray[np.float32], right_array: NDArray[np.float32], block_size: int, x_search_block_size: int, y_search_block_size: int) -> int:
+    """Block comparison function to find minimum SSD match
+    Return x axis index
+    """
     x_min = max(0, x - x_search_block_size)
     x_max = min(right_array.shape[1], x + x_search_block_size)
     y_min = max(0, y - y_search_block_size)
     y_max = min(right_array.shape[0], y + y_search_block_size)
-    
+
     min_ssd = float('inf')
-    min_index = (y, x)
+    min_index = x
 
     for j in range(y_min, y_max):
         for i in range(x_min, x_max):
             block_right = right_array[j:j + block_size, i:i + block_size]
-            ssd = sum_of_squared_diff(block_left, block_right)
-            if ssd < min_ssd:
-                min_ssd = ssd
-                min_index = (j, i)
+
+            if block_right.shape == block_left.shape:
+                ssd = _sum_of_squared_diff(block_left, block_right)
+
+                if ssd < min_ssd:
+                    min_ssd = ssd
+                    min_index = i
 
     return min_index
 
+
 @jit(nopython=True)
-def ssd_correspondence(img1, img2):
+def ssd_correspondence(img1: NDArray[np.float32], img2: NDArray[np.float32], block_size=5, x_search_block_size=50, y_search_block_size=1) -> tuple[NDArray[np.float32], NDArray[np.uint8]]:
     """Compute the disparity map using SSD correspondence"""
-    block_size = 15
-    x_search_block_size = 50
-    y_search_block_size = 1
-    h, w = img1.shape
-    disparity_map = np.zeros((h, w))
+    h, w = img1.shape[:2]
+    disparity_map = np.zeros((h, w), dtype=np.float32)
 
     for y in range(block_size, h - block_size):
         for x in range(block_size, w - block_size):
             block_left = img1[y:y + block_size, x:x + block_size]
-            index = block_comparison(y, x, block_left, img2, block_size, x_search_block_size, y_search_block_size)
-            disparity_map[y, x] = abs(index[1] - x)
+            index = _block_comparison(
+                y, x, block_left, img2, block_size, x_search_block_size, y_search_block_size)
+            disparity_map[y, x] = abs(index - x)
 
     max_pixel = np.max(disparity_map)
     min_pixel = np.min(disparity_map)
 
-    disparity_map_scaled = ((disparity_map - min_pixel) * 255 / (max_pixel - min_pixel)).astype(np.uint8)
-    
+    disparity_map_scaled = ((disparity_map - min_pixel)
+                            * 255 / (max_pixel - min_pixel)).astype(np.uint8)
+
     return disparity_map, disparity_map_scaled
