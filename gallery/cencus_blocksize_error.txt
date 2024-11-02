@@ -1,0 +1,10 @@
+# Obiviously the larger the size block, the more error it gives
+# block size 3 has to much noises
+
+Block size RMSE RMSE
+5 6476.252 6476.252
+7 6610.6997 6610.6997
+9 6754.7964 6754.7964
+11 6951.9106 6951.9106
+13 7158.5454 7158.5454
+15 7374.4424 7374.4424
