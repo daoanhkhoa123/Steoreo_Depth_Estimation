@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from modules.calibration import draw_keypoints_and_match, drawlines, RANSAC_F_mat, compute_Essential_matrix
-from old.rectification import rectification
+from modules.rectification import rectification
 from modules.correspondence import ssd_correspondence
 from modules.depth import disparity_to_depth
 from modules import draw_show_img_utils as dsiu
