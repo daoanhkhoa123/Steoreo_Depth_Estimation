@@ -3,9 +3,63 @@
   MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });
 </script>
 
-![](image-7.png)
+# I. Introduction
+
+## 1.1.1 Introduction to the Problem
+
+The problem of depth estimation from images is a core challenge in the field of Computer Vision, with widespread applications across automated systems, self-driving cars, robotics, virtual reality (VR), augmented reality (AR), and more. By analyzing and determining the depth of objects within images, systems can better understand the spatial structure and depth of the real-world environment, allowing for intelligent decision-making and effective interactive responses.
+
+Depth estimation from a single image (monocular depth estimation) is challenging because a single image provides only 2D data, lacking the stereo information available to human vision. Multi-image (stereo or multi-view depth estimation) approaches, on the other hand, leverage differences between viewpoints to reconstruct spatial depth. Both approaches demand complex and accurate algorithms to achieve optimal performance.
+
+### 1.1.2 Practical Applications of Depth Estimation
+
+- **Self-Driving Cars**: Depth estimation enables cars to detect the distance to objects, pedestrians, and other vehicles, assisting with collision avoidance and precise navigation.
+- **Robotics**: Robots use depth information to navigate and manipulate objects accurately, essential for tasks across industrial, healthcare, and home environments.
+- **AR/VR**: In VR and AR, depth perception enhances realism by positioning objects accurately in 3D space, allowing for more natural and immersive interactions.
+
+## 1.2 Related Research and Achievements in the Past 5-7 Years
+
+### 1.2.1 Research Trends
+
+1. **Deep Learning-Based Approaches**
+
+   a. **CNN-Based Monocular Depth Estimation**: Convolutional Neural Networks (CNNs) have significantly advanced single-image depth estimation. Architectures like U-Net, ResNet, and DenseNet help models learn crucial image features, producing detailed and accurate depth maps.
+
+   b. **Transformer-Based Models**: In recent years, Transformers have been applied to depth estimation, with models like Vision Transformer (ViT) and Swin Transformer. These models leverage the spatial processing power of Transformers, improving depth estimation accuracy.
+
+   c. **Hybrid Approaches**: Combining CNN and Transformer models has allowed for the best of both techniques: CNN’s spatial feature extraction and Transformers’ contextual processing capabilities.
+
+2. **Unsupervised and Self-Supervised Learning**
+
+   a. **Self-Supervised Depth Estimation**: A prominent research direction is self-supervised learning, where models learn from image pairs or videos without requiring ground-truth depth labels. This approach reduces the dependency on manually labeled data, making it adaptable to various environments and datasets.
+
+   b. **Photometric Consistency Loss**: A popular technique in self-supervised learning is using photometric consistency loss, based on matching pixel intensities between images from different views. This improves model accuracy without requiring labeled depth data.
+
+3. **Multi-Image Depth Estimation (Stereo/Multi-View)**
+
+   a. **Stereo Matching Techniques**: For systems that capture multiple images, stereo matching techniques such as Semi-Global Matching (SGM), PatchMatch, and Cost Volume Processing allow models to extract depth information by comparing disparities between images.
+
+   b. **Multi-View Stereo (MVS)**: This technique uses multiple perspectives to determine object depth more accurately than monocular methods. Popular methods include Patch-based Multi-View Stereo (PMVS) and COLMAP.
+
+### 1.2.2 Key Results and Achievements
+
+1. **Improvements in Accuracy and Performance**
+
+   a. Newer models using CNNs and Transformers have achieved higher accuracy while reducing processing time and optimizing memory use, enabling depth estimation systems to perform efficiently on mobile and low-power devices. For example, advanced models like MiDaS and DPT (Depth Prediction Transformer) have successfully applied single-image depth estimation.
+
+2. **Real-World Applications**
+
+   a. Depth estimation algorithms have been successfully integrated into real-world applications, including Tesla's self-driving technology, Apple's Face ID, and Google's ARCore, allowing for realistic face recognition and depth simulation features for users.
+
+3. **Challenges and Potential Solutions**
+
+   a. Complex scenarios such as low light, transparent objects, or highly reflective surfaces still present challenges for depth estimation models. Current research focuses on developing advanced techniques like Image Denoising, Regularization, and Data Augmentation to enhance accuracy in complex environments.
 
 # II. Mathematical background
+
+Monocular vision can be deceiving.
+
+![](image-7.png)
 
 ## 2.1. Epipolar Geometry
 Epipolar geometry is the geometry of stereo vision. When two cameras view a 3D scene from two distinct positions, there are a number of geometric relations between the 3D points and their projections onto the 2D images that lead to constraints between the image points. These relations are derived based on the assumption that the cameras can be approximated by the pinhole camera model.
