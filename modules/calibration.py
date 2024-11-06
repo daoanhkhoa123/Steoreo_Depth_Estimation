@@ -25,7 +25,7 @@ def draw_keypoints_and_match(img1: MatLike, img2: MatLike) -> Tuple[NDArray, NDA
     kp2_pts = np.array([kp2[m.trainIdx].pt for m in matches], dtype=np.float32)
 
     matched_img = cv2.drawMatches(
-        img1, kp1, img2, kp2, matches[:10], None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+        img1, kp1, img2, kp2, matches[:16], None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
 
     return kp1_pts, kp2_pts, matched_img
 
@@ -55,7 +55,7 @@ def compute_Fundamental_matrix(kp1_list: NDArray, kp2_list: NDArray) -> NDArray:
     return Uf @ np.diag(Df) @ Vft
 
 
-def RANSAC_F_mat(kp1_list: NDArray, kp2_list: NDArray, max_inliers=20, threshold=0.03, max_iter=256, random_seed: int | None = 42) -> NDArray:
+def RANSAC_F_matrix(kp1_list: NDArray, kp2_list: NDArray, max_inliers=20, threshold=0.03, max_iter=256, random_seed: int | None = 42) -> NDArray:
     """This method is used to shortlist the best F matrix using RANSAC based on the number of inliers."""
 
     assert len(kp1_list) == len(kp2_list), f"kp1_list must have the same length as kp2_list. Got {

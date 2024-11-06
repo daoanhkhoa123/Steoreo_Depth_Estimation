@@ -3,16 +3,70 @@
   MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });
 </script>
 
-![](image-7.png)
+# I. Introduction
+
+## 1.1.1 Introduction to the Problem
+
+The problem of depth estimation from images is a core challenge in the field of Computer Vision, with widespread applications across automated systems, self-driving cars, robotics, virtual reality (VR), augmented reality (AR), and more. By analyzing and determining the depth of objects within images, systems can better understand the spatial structure and depth of the real-world environment, allowing for intelligent decision-making and effective interactive responses.
+
+Depth estimation from a single image (monocular depth estimation) is challenging because a single image provides only 2D data, lacking the stereo information available to human vision. Multi-image (stereo or multi-view depth estimation) approaches, on the other hand, leverage differences between viewpoints to reconstruct spatial depth. Both approaches demand complex and accurate algorithms to achieve optimal performance.
+
+### 1.1.2 Practical Applications of Depth Estimation
+
+- **Self-Driving Cars**: Depth estimation enables cars to detect the distance to objects, pedestrians, and other vehicles, assisting with collision avoidance and precise navigation.
+- **Robotics**: Robots use depth information to navigate and manipulate objects accurately, essential for tasks across industrial, healthcare, and home environments.
+- **AR/VR**: In VR and AR, depth perception enhances realism by positioning objects accurately in 3D space, allowing for more natural and immersive interactions.
+
+## 1.2 Related Research and Achievements in the Past 5-7 Years
+
+### 1.2.1 Research Trends
+
+1. **Deep Learning-Based Approaches**
+
+   a. **CNN-Based Monocular Depth Estimation**: Convolutional Neural Networks (CNNs) have significantly advanced single-image depth estimation. Architectures like U-Net, ResNet, and DenseNet help models learn crucial image features, producing detailed and accurate depth maps.
+
+   b. **Transformer-Based Models**: In recent years, Transformers have been applied to depth estimation, with models like Vision Transformer (ViT) and Swin Transformer. These models leverage the spatial processing power of Transformers, improving depth estimation accuracy.
+
+   c. **Hybrid Approaches**: Combining CNN and Transformer models has allowed for the best of both techniques: CNN’s spatial feature extraction and Transformers’ contextual processing capabilities.
+
+2. **Unsupervised and Self-Supervised Learning**
+
+   a. **Self-Supervised Depth Estimation**: A prominent research direction is self-supervised learning, where models learn from image pairs or videos without requiring ground-truth depth labels. This approach reduces the dependency on manually labeled data, making it adaptable to various environments and datasets.
+
+   b. **Photometric Consistency Loss**: A popular technique in self-supervised learning is using photometric consistency loss, based on matching pixel intensities between images from different views. This improves model accuracy without requiring labeled depth data.
+
+3. **Multi-Image Depth Estimation (Stereo/Multi-View)**
+
+   a. **Stereo Matching Techniques**: For systems that capture multiple images, stereo matching techniques such as Semi-Global Matching (SGM), PatchMatch, and Cost Volume Processing allow models to extract depth information by comparing disparities between images.
+
+   b. **Multi-View Stereo (MVS)**: This technique uses multiple perspectives to determine object depth more accurately than monocular methods. Popular methods include Patch-based Multi-View Stereo (PMVS) and COLMAP.
+
+### 1.2.2 Key Results and Achievements
+
+1. **Improvements in Accuracy and Performance**
+
+   a. Newer models using CNNs and Transformers have achieved higher accuracy while reducing processing time and optimizing memory use, enabling depth estimation systems to perform efficiently on mobile and low-power devices. For example, advanced models like MiDaS and DPT (Depth Prediction Transformer) have successfully applied single-image depth estimation.
+
+2. **Real-World Applications**
+
+   a. Depth estimation algorithms have been successfully integrated into real-world applications, including Tesla's self-driving technology, Apple's Face ID, and Google's ARCore, allowing for realistic face recognition and depth simulation features for users.
+
+3. **Challenges and Potential Solutions**
+
+   a. Complex scenarios such as low light, transparent objects, or highly reflective surfaces still present challenges for depth estimation models. Current research focuses on developing advanced techniques like Image Denoising, Regularization, and Data Augmentation to enhance accuracy in complex environments.
 
 # II. Mathematical background
 
-## 1. Epipolar Geometry
+Monocular vision can be deceiving.
+
+![](image-7.png)
+
+## 2.1. Epipolar Geometry
 Epipolar geometry is the geometry of stereo vision. When two cameras view a 3D scene from two distinct positions, there are a number of geometric relations between the 3D points and their projections onto the 2D images that lead to constraints between the image points. These relations are derived based on the assumption that the cameras can be approximated by the pinhole camera model.
 
 ![](image-8.png)
 
-### 1.1. Definition
+### 2.1.1. Definition
 The figure below depicts two pinhole cameras looking at point X. In real cameras, the image plane is actually behind the focal center. 
 However, we simplified the problem by placing a *virtual* image plane in front of the camera, since real plane is symmetric about the focal center of the lens.
 
@@ -21,14 +75,14 @@ Each camera captures a 2D image of the 3D world. This conversion from 3D to 2D i
 ![](image-11.png)
 
 
-### 1.2. Epipole or epipolar point
+### 2.1.2. Epipole or epipolar point
 
 Each center projects onto a distinct point into the other camera's image plane. These two image points, denoted by $e_L$ and $e_R$, are called epipoles or epipolar points.
 
 Ep`ipolar point is the intersection of line connecting two camera's center $O_L$ and $O_R$ with their image plane.
 
 
-### 1.3. Epipolar line
+### 2.1.3. Epipolar line
     
 Line $O_L-X$ projected on right camera creating a line $e_R-X_R$ called the epipolar line.
 Symmetrically, the line $O_R-X$ is seen by the right camera as a point and is seen as epipolar line $e_L-x_L$ by the left camera.
@@ -42,10 +96,10 @@ Then the epipolar lines are parallel to $x$ axis of image.
 
 ![](image-2.png)
 
-### 1.4. Epipolar plane
+### 2.1.4. Epipolar plane
 $X, O_L, O_R$ form a plane, called epipolar plane. The epipolar plane and all epipolar lines intersect the epipoles regardless of where $X$ is located.
 
-### 1.5. Epipolar constraint
+### 2.1.5. Epipolar constraint
 
 If the relative position of the two cameras is known, this leads to two important observations:
 
@@ -55,7 +109,7 @@ This provides an epipolar constraint: the projection of $X$ on the right camera 
 
 Epipolar constraints can also be described by the essential matrix or the fundamental matrix between the two cameras.
 
-### 1.6. Disparity and Depth map
+### 2.1.6. Disparity and Depth map
 
 ![](image-10.png)
 
@@ -79,9 +133,9 @@ Where:
 
 So in short, the above equation says that the depth of a point in a scene is inversely proportional to the difference in distance of corresponding image points and their camera centers.
 
-## 2. Essential matrix
+## 2.2. Essential matrix
 
-### 2.1. Coordinate representation
+### 2.2.1. Coordinate representation
 This derivation follows the paper by Longuet-Higgins.
 
 For simplicity, we assume all the cameras are **normalized** and project the 3D world onto their respective image planes. i.e $K = K' = I$.
@@ -110,7 +164,7 @@ y'_2\\
 1
 \end{array}\right)
 =
-\frac{1}{x_3}
+\frac{1}{x'_3}
 \left(\begin{array}{cc} 
 x'_1\\ 
 x'_2\\
@@ -126,9 +180,9 @@ y = \frac{1}{x_3} {x} \quad \text{and} \quad y' = \frac{1}{x_3}{x}
 \end{align}
 $$
  
-Where $y$ are the image 2D coordinate, $x$ are real life 3D cooordinates.
+Where $y$ are the image 2D coordinate, $x$ are real proper 3D cooordinates but in two different coordinate systems.
 
-### 2.2. Set up camera framework
+### 2.2.2. Set up camera framework
 
 ![](image-3.png)
 
@@ -136,15 +190,15 @@ Let further assume world reference coordinate is associated with the first camer
 
 $$
 \begin{align}
-\vec{x'} = R({x} - t)
+x'=Rx+t
 \end{align}
 $$
 
-So the camera matrix will be:
+And the camera matrix will be:
 
 $$
 \begin{align}
-M = P[I & 0] \quad \text{and} \quad M' = P'[R^T & R^T-t]' 
+M = P[I \quad 0] \quad \text{and} \quad M' = P'[R^T \quad R^T-t]
 \end{align}
 $$
 
@@ -152,14 +206,13 @@ Or (because of cameras are normalized):
 
 $$
 \begin{align}
-M = [I & 0] \quad \text{and} \quad M' = [R^T & R^T-t]' 
+M = [I \quad 0] \quad \text{and} \quad M' = [R^T \quad R^T-t]' 
 \end{align}
 $$
 
+### 2.2.3. Essential matrix derivation
 
-### 2.3. Essential matrix derivation
-
-Since the vector $x = R(x'-T)$ and $t$ lie in the same epipolar line, then their cross product would produce a vector normal to the epipolar plane:
+Since the vectors $Rx' + t$ and $t$ lie in the epipolar plane, then if we take the cross product of $t \times (Rx' + t) = t \times (Rx')$, we will get a vector normal to the epipolar plane. This also means that $x$ which lies in the epipolar plane is normal to $t \times (Rx')$, giving us the constraint that their dot product is zero:
 
 $$
 \begin {align}
@@ -191,7 +244,7 @@ Combining this expression with Equation 6, we can convert the cross
 product term into matrix multiplication, giving:
 
 $$
-x^T.[t_\times](Rx')=0  
+x^T[t_\times](Rx')=0  
 $$
 
 $$
@@ -210,7 +263,7 @@ $$
 
 The Essential matrix is a 3 × 3 matrix that contains 5 degrees of freedom. It has rank 2 and is singular.
 
-### 2.4. Essential matrix mapping
+### 2.2.4. Essential matrix mapping
 
 Different to a homography which maps a point to a point, an essential matrix maps a **point** to a **line**.
 Furthermore, let's consider an epipolar line $l$, with the form of $ax+by+c=0$, or in vector form:
@@ -235,19 +288,19 @@ l=Ex' \quad \text{and} \quad l'=E^Tx
 $$
 
 
-### 2.5. Essential matrix kernel
+### 2.2.5. Essential matrix kernel
 Since every lines on image plane pass epipolar. So $e^Tl=0$, combine with Equation 9, we have $e^Tl=0=e^TEx'$. Furthermore, $e^TE=(E^Te)^T=l'^T$ thus is normal with $x'$. 
 
 In short, essential kernel defines the epipole:
 $$
 \begin {align}
-e^TE=0 & and & Ee'=0
+e^TE=0 \quad and \quad Ee'=0
 \end {align}
 $$
 (points in normalized camera coordinates)
 
-## 3. Fundamental matrix
-### 3.1. Camera matrix
+## 2.3. Fundamental matrix
+### 2.3.1. Camera matrix
 How do you generalize to uncalibrated cameras? Recall the Equation 3:
 $$
 \begin{align}
@@ -273,7 +326,7 @@ x'=K^-1'X_W'
 \end {aligned}
 $$
 
-### 3.2. Fundamental matrix derivation
+### 2.3.2. Fundamental matrix derivation
 Recall that in the canonical case from Equation 7:
 $$
 \begin {align}
@@ -292,7 +345,7 @@ Let the matrix $F = K^{-T}  [t_\times] R K'^{-1}$ as the **Fundamental Matrix** 
 
 Therefore, it is also useful in computing the epipolar lines associated with p and p′, even when the camera matrices K, K′ and the transformation R, T are unknown.
 
-### 3.3. Propertises of fundamental matrix
+### 2.3.3. Propertises of fundamental matrix
 
 Similar to the Essential matrix, we can compute the epipolar lines $l'=F^T x$ and $l=Fx'$ from just the fundamental matrix and the corresponding points.
 
@@ -301,8 +354,8 @@ Fundamental matrix contains 7 degrees of freedom, while Essential matrix’s 5 d
 If we know the fundamental matrix, then simply knowing a point in an image
 gives us an easy constraint (the epipolar line) of the corresponding point in the other image. Therefore, without knowing the actual position of $X_W$ in 3D space, or any of the extrinsic or intrinsic characteristics of the cameras, we can establish a relationship between any $x$ and $x'$.
 
-## 4. The Eight-Point algorithm
-### 4.1. Formulating a homogeneous linear equation
+## 2.4. The Eight-Point algorithm
+### 2.4.1. Formulating a homogeneous linear equation
 
 With each correspondent $x$ and $x'$
 
@@ -320,6 +373,7 @@ x'_1\\
 x'_2\\
 1
 \end{array}\right)
+\quad \text{and} \quad
 F = 
 \left(\begin{array}{cc} 
 f_{11} & f_{12} & f_{13}\\
@@ -364,7 +418,7 @@ $$
 
 Where $\mathbf{X}$ is a $N \times 9$ matrix with $N \ge 8$.
 
-### 4.2. Solving the equation
+### 2.4.2. Solving the equation
 In pracitce, there are noise so solution vector f is defined only up to an unknown scale.
 So it is better to use more than eight correspondences and create a larger $X$. 
 Furthermore, $X$ is often rank-deficient, so we approximate $f$ by **Linear least squares**:
@@ -384,7 +438,7 @@ The solution to this optimize problem can be found by Singular Value Decompositi
 $f$ is the right singular vector corresponding to the smallest singular value of $X$. A reshape
 of this $f$ into $3 \times 3$ matrix give result called as $\mathbf{F_{est}}$.
 
-### 4.3. Enforcing the internal constraint
+### 2.4.3. Enforcing the internal constraint
 An important property of the fundamental matrix is that it is singular, in fact of rank 2. 
 Furthermore, the left and right null spaces ($e$ and $e'$) of $F$ are generated by the vectors representing the two epipoles in the images i.e $dim Null(F) = 1$. 
 However, often, dealing with noisy image gives the result $\mathbf{F_{est}}$ from Equation 14 usually does not have rank 2.
@@ -415,17 +469,17 @@ V^T
 $$
 
 
-### 4.4. Normalized algorithm
-#### 4.4.1. Problems
+### 2.4.4. Normalized algorithm
+#### 2.4.4.1. Problems
 
-The problem of the standard algorithm is that $X$ is often ill-conditioned for SVD. For SVD to work properly, $X$ shuld have one singular value equal or near to zero, with the rest are non zero.
+The problem of the standard algorithm is that $X$ is often ill-conditioned for SVD. For SVD to work properly, $X$ should have differences between singular values not too large.
 
 However, correspondences coordinate $(x,y,1)$ will often have
 extremely large values in the first and second compared to the third $(\bar{x}=(1920,1080,1))$ due to large pixel range of mordern digital camera.
 
 Furthermore, if the image points used to construct $X$ lie in a relatively small region of the image $((700,700)\pm100)$, then $x$ and $x'$ are relatively similar, resulting in $X$ has one ery large singular value, with the rest relatively small.
 
-#### 4.4.2. Solution
+#### 2.4.4.2. Solution
 To solve this, map each coordinate system of two images independently into a new system satisfying two conditions:
 
 - The origin of the new system should be at the centroid (center of gravity) of the image points. This is accomplished by translating original origin to new one.

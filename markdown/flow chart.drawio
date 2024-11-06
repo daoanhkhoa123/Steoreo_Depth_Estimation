@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0" version="24.8.3">
   <diagram id="6a731a19-8d31-9384-78a2-239565b7b9f0" name="Page-1">
-    <mxGraphModel dx="1158" dy="648" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
+    <mxGraphModel dx="1282" dy="583" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -88,13 +88,13 @@
         <mxCell id="mSKNKC0NloctIs-59Tr3-96" value="Threshold" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="215.13" y="850" width="110.75" height="50" as="geometry" />
         </mxCell>
+        <mxCell id="6wBHTi-aStBj94lmwah1-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mSKNKC0NloctIs-59Tr3-100" target="6wBHTi-aStBj94lmwah1-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="mSKNKC0NloctIs-59Tr3-100" value="Calculate Essential matrix" style="whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
           <mxGeometry x="390" y="942.5" width="130.01" height="75" as="geometry" />
         </mxCell>
         <mxCell id="mSKNKC0NloctIs-59Tr3-116" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="mSKNKC0NloctIs-59Tr3-102" target="mSKNKC0NloctIs-59Tr3-100" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="EMxbCr1pK1zGxE4D3BGX-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="mSKNKC0NloctIs-59Tr3-100" target="mSKNKC0NloctIs-59Tr3-141">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="mSKNKC0NloctIs-59Tr3-102" value="Camera intrinsic matrix&lt;div&gt;K1, K2&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=mxgraph.flowchart.terminator;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;verticalAlign=middle;" parent="1" vertex="1">
@@ -140,7 +140,7 @@
             <mxPoint x="939.99" y="460" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="EMxbCr1pK1zGxE4D3BGX-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mSKNKC0NloctIs-59Tr3-158" target="EMxbCr1pK1zGxE4D3BGX-9">
+        <mxCell id="EMxbCr1pK1zGxE4D3BGX-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="mSKNKC0NloctIs-59Tr3-158" target="EMxbCr1pK1zGxE4D3BGX-9" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="mSKNKC0NloctIs-59Tr3-158" value="Base line&lt;div&gt;Focal length&lt;/div&gt;" style="shape=mxgraph.flowchart.terminator;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;" parent="1" vertex="1">
@@ -149,8 +149,23 @@
         <mxCell id="mSKNKC0NloctIs-59Tr3-161" value="Depth image" style="shape=mxgraph.flowchart.terminator;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;" parent="1" vertex="1">
           <mxGeometry x="864.99" y="510" width="150" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="EMxbCr1pK1zGxE4D3BGX-9" value="Disparity Map" style="shape=mxgraph.flowchart.terminator;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;" vertex="1" parent="1">
+        <mxCell id="EMxbCr1pK1zGxE4D3BGX-9" value="Disparity Map" style="shape=mxgraph.flowchart.terminator;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;" parent="1" vertex="1">
           <mxGeometry x="864.99" y="400" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="6wBHTi-aStBj94lmwah1-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="6wBHTi-aStBj94lmwah1-8" target="6wBHTi-aStBj94lmwah1-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6wBHTi-aStBj94lmwah1-8" value="Image Rectification" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="942.5" width="130.01" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="6wBHTi-aStBj94lmwah1-10" value="Steoreo Images with&lt;div&gt;parallel epipolar lines&lt;/div&gt;" style="shape=mxgraph.flowchart.terminator;strokeWidth=2;gradientColor=none;gradientDirection=north;fontStyle=0;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="705.01" y="805" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="6wBHTi-aStBj94lmwah1-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.563;entryY=1.04;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="6wBHTi-aStBj94lmwah1-10" target="mSKNKC0NloctIs-59Tr3-141">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6wBHTi-aStBj94lmwah1-14" value="Rectification" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fontColor=#000000;darkOpacity=0.05;fillColor=#FFF9B2;strokeColor=none;fillStyle=solid;direction=west;gradientDirection=north;gradientColor=#FFF2A1;shadow=1;size=20;pointerEvents=1;" vertex="1" parent="1">
+          <mxGeometry x="899.99" y="840" width="140" height="160" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
