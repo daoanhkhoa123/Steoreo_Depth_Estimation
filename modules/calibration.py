@@ -11,14 +11,22 @@ def draw_keypoints_and_match(img1: MatLike, img2: MatLike) -> Tuple[NDArray, NDA
     """This function is used for finding keypoints and dercriptors in the image and
         find best matches using brute force/FLANN based matcher."""
     # tao ORB phat hien dac diem chung
+<<<<<<< HEAD
     orb = cv2.ORB.create()
+=======
+    orb = cv2.ORB.create(nfeatures=10000)
+>>>>>>> f1d93418cf715d09de296660dc943fab9b594c53
     kp1, des1 = orb.detectAndCompute(img1, None)
     kp2, des2 = orb.detectAndCompute(img2, None)
 
     # Tạo bruteforce và tìm các điểm khớp
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
     matches = bf.match(des1, des2)
+<<<<<<< HEAD
     matches = sorted(matches, key=lambda x: x.distance)
+=======
+    matches = sorted(matches, key=lambda x: x.distance)[:32]
+>>>>>>> f1d93418cf715d09de296660dc943fab9b594c53
 
     # Tạo danh sách tọa độ điểm khớp nhau
     kp1_pts = np.array([kp1[m.queryIdx].pt for m in matches], dtype=np.float32)
