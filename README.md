@@ -146,32 +146,33 @@ Let the 3D coordinates of a point **P** be $(x_1,x_2,x_3)$ and $(x'_{1},x'_{2},x
 The mapping from the coordinates of a 3D point P to the 2D image coordinates of the point's projection onto the image plane, according to the pinhole camera model, is given by:
 
 $$
-\left(\begin{array}{cc} 
+\left(\begin{array}{c} 
 y_1\\
 y_2\\
 1
 \end{array}\right)
 =
 \frac{1}{x_3}
-\left(\begin{array}{cc} 
+\left(\begin{array}{c} 
 x_1\\ 
 x_2\\
 x_3
 \end{array}\right)
 \quad \text{and} \quad
-\left(\begin{array}{cc} 
+\left(\begin{array}{c} 
 y'_1\\
 y'_2\\
 1
 \end{array}\right)
 =
 \frac{1}{x'_3}
-\left(\begin{array}{cc} 
+\left(\begin{array}{c} 
 x'_1\\ 
 x'_2\\
 x'_3
 \end{array}\right)
-$$ 
+$$
+
 
 More compactly as:
 
